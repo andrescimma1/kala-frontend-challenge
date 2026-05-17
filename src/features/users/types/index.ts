@@ -1,7 +1,6 @@
 export type {
-  PaginatedUsersResponse,
-  PaginationParams,
   UsersListParams,
+  UsersResponse,
   UsersSearchParams,
 } from './api'
 export type { UpdateUserPayload, User, UserCompany } from './user'

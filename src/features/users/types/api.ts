@@ -1,17 +1,17 @@
 import type { User } from './user'
 
-export interface PaginationParams {
+export interface UsersListParams {
   limit: number
   skip: number
 }
 
-export interface UsersListParams extends PaginationParams {}
-
-export interface UsersSearchParams extends PaginationParams {
+export interface UsersSearchParams {
   q: string
+  limit: number
+  skip: number
 }
 
-export interface PaginatedUsersResponse {
+export interface UsersResponse {
   users: User[]
   total: number
   skip: number

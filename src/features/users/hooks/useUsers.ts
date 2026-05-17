@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { usersApi } from '../api/usersApi'
 import { usersQueryKeys } from '../api/queryKeys'
-import type { PaginationParams } from '../types/api'
-
-export interface UseUsersParams extends PaginationParams {
+export interface UseUsersParams {
+  limit: number
+  skip: number
   search: string
 }
 

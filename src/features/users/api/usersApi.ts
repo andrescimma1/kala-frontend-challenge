@@ -1,7 +1,7 @@
 import { apiClient } from '@/lib/apiClient'
 import type {
-  PaginatedUsersResponse,
   UsersListParams,
+  UsersResponse,
   UsersSearchParams,
 } from '../types/api'
 import type { UpdateUserPayload, User } from '../types/user'
@@ -11,13 +11,13 @@ const USERS_PATH = '/users'
 export const usersApi = {
   getUsers(params: UsersListParams) {
     return apiClient
-      .get<PaginatedUsersResponse>(USERS_PATH, { params })
+      .get<UsersResponse>(USERS_PATH, { params })
       .then((res) => res.data)
   },
 
   searchUsers(params: UsersSearchParams) {
     return apiClient
-      .get<PaginatedUsersResponse>(`${USERS_PATH}/search`, { params })
+      .get<UsersResponse>(`${USERS_PATH}/search`, { params })
       .then((res) => res.data)
   },
 

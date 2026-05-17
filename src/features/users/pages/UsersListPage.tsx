@@ -1,4 +1,6 @@
 import { Card, Space } from 'antd'
+import { useEffect } from 'react'
+import { useUsersListUrlSync } from '../hooks/useUsersListUrlSync'
 import { useUsersQuery } from '../hooks/useUsersQuery'
 import { UsersListHeader } from '../components/UsersListHeader'
 import { UsersSearchInput } from '../components/UsersSearchInput'
@@ -19,6 +21,8 @@ import '../styles/user-states.scss'
 import '../styles/users-list.scss'
 
 export function UsersListPage() {
+  useUsersListUrlSync()
+
   const dispatch = useAppDispatch()
   const searchTerm = useAppSelector(selectSearchTerm)
   const currentPage = useAppSelector(selectCurrentPage)
@@ -36,6 +40,18 @@ export function UsersListPage() {
   const total = data?.total ?? 0
   const isInitialLoading = isLoading && data === undefined
   const isEmpty = !isInitialLoading && !isError && users.length === 0
+
+  useEffect(() => {
+    if (isInitialLoading || total === 0) {
+      return
+    }
+
+    const maxPage = Math.max(1, Math.ceil(total / pageSize))
+
+    if (currentPage > maxPage) {
+      dispatch(setCurrentPage(maxPage))
+    }
+  }, [currentPage, dispatch, isInitialLoading, pageSize, total])
 
   const renderTableSection = () => {
     if (isInitialLoading) {

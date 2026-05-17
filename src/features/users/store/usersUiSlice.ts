@@ -32,6 +32,18 @@ const usersUiSlice = createSlice({
     resetPagination(state) {
       state.currentPage = 1
     },
+    hydrateFromUrl(
+      state,
+      action: PayloadAction<{
+        searchTerm: string
+        currentPage: number
+        pageSize: number
+      }>,
+    ) {
+      state.searchTerm = action.payload.searchTerm
+      state.currentPage = action.payload.currentPage
+      state.pageSize = action.payload.pageSize
+    },
   },
 })
 
@@ -40,6 +52,7 @@ export const {
   setCurrentPage,
   setPageSize,
   resetPagination,
+  hydrateFromUrl,
 } = usersUiSlice.actions
 
 export default usersUiSlice.reducer

@@ -10,13 +10,24 @@ export function UsersSearchInput() {
   const dispatch = useAppDispatch()
   const searchTerm = useAppSelector(selectSearchTerm)
   const [inputValue, setInputValue] = useState(searchTerm)
+  const [syncedSearchTerm, setSyncedSearchTerm] = useState(searchTerm)
   const debouncedInput = useDebouncedValue(inputValue)
 
+  if (searchTerm !== syncedSearchTerm) {
+    setSyncedSearchTerm(searchTerm)
+    setInputValue(searchTerm)
+  }
+
   useEffect(() => {
+    // Wait until debounce settles so URL-driven search is not cleared on load.
+    if (debouncedInput !== inputValue) {
+      return
+    }
+
     if (debouncedInput !== searchTerm) {
       dispatch(setSearchTerm(debouncedInput))
     }
-  }, [debouncedInput, dispatch, searchTerm])
+  }, [debouncedInput, dispatch, inputValue, searchTerm])
 
   return (
     <Input

@@ -1,19 +1,130 @@
 import { ArrowLeftOutlined, ReloadOutlined } from '@ant-design/icons'
-import { Button, Card, Empty, Result, Space, Spin } from 'antd'
+import {
+  Alert,
+  Button,
+  Card,
+  Empty,
+  Result,
+  Skeleton,
+  Space,
+  Typography,
+} from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants/routes'
 
-interface UserDetailLoadingProps {
+const { Text } = Typography
+
+interface StateCardProps {
+  className?: string
+  children: React.ReactNode
+}
+
+function StateCard({ className, children }: StateCardProps) {
+  return (
+    <Card bordered={false} className={className}>
+      {children}
+    </Card>
+  )
+}
+
+// —— Users list ——
+
+export function UsersListLoading({ className }: { className?: string }) {
+  return (
+    <div className={`users-feature-state users-feature-state--list-loading ${className ?? ''}`}>
+      <Skeleton active paragraph={{ rows: 1 }} title={{ width: '40%' }} />
+      <Skeleton
+        active
+        paragraph={{ rows: 6 }}
+        title={false}
+        className="users-feature-state__table-skeleton"
+      />
+    </div>
+  )
+}
+
+interface UsersListErrorProps {
+  message?: string
+  onRetry: () => void
   className?: string
 }
 
-export function UserDetailLoading({ className }: UserDetailLoadingProps) {
+export function UsersListError({
+  message,
+  onRetry,
+  className,
+}: UsersListErrorProps) {
   return (
-    <Card bordered={false} className={className}>
-      <div className="user-detail__state user-detail__state--loading">
-        <Spin size="large" />
+    <Result
+      status="error"
+      title="Failed to load users"
+      subTitle={message ?? 'Something went wrong. Please try again.'}
+      extra={
+        <Button type="primary" icon={<ReloadOutlined />} onClick={onRetry}>
+          Retry
+        </Button>
+      }
+      className={`users-feature-state ${className ?? ''}`}
+    />
+  )
+}
+
+interface UsersListEmptyProps {
+  searchTerm?: string
+  className?: string
+}
+
+export function UsersListEmpty({ searchTerm, className }: UsersListEmptyProps) {
+  const trimmedSearch = searchTerm?.trim() ?? ''
+  const hasSearch = trimmedSearch.length > 0
+
+  return (
+    <div className={`users-feature-state users-feature-state--empty ${className ?? ''}`}>
+      <Empty
+        image={Empty.PRESENTED_IMAGE_SIMPLE}
+        description={
+          hasSearch
+            ? `No users match "${trimmedSearch}"`
+            : 'No users found'
+        }
+      >
+        {hasSearch && (
+          <Text type="secondary">Try a different name, email, or company.</Text>
+        )}
+      </Empty>
+    </div>
+  )
+}
+
+// —— User detail / edit ——
+
+export function UserDetailLoading({ className }: { className?: string }) {
+  return (
+    <StateCard className={className}>
+      <div className="users-feature-state users-feature-state--detail-loading">
+        <div className="users-feature-state__detail-header">
+          <Skeleton.Avatar active size={72} shape="circle" />
+          <div className="users-feature-state__detail-header-lines">
+            <Skeleton active paragraph={{ rows: 1 }} title={false} />
+            <Skeleton active paragraph={{ rows: 1 }} title={false} />
+          </div>
+        </div>
+        <Skeleton active paragraph={{ rows: 4 }} title={{ width: '30%' }} />
+        <Skeleton active paragraph={{ rows: 6 }} title={false} />
       </div>
-    </Card>
+    </StateCard>
+  )
+}
+
+export function UserEditLoading({ className }: { className?: string }) {
+  return (
+    <StateCard className={className}>
+      <div className="users-feature-state users-feature-state--edit-loading">
+        <Skeleton active paragraph={{ rows: 1 }} title={{ width: '25%' }} />
+        <Skeleton active paragraph={{ rows: 8 }} title={{ width: '20%' }} />
+        <Skeleton active paragraph={{ rows: 6 }} title={{ width: '20%' }} />
+      </div>
+    </StateCard>
   )
 }
 
@@ -21,52 +132,98 @@ interface UserDetailErrorProps {
   message?: string
   onRetry: () => void
   className?: string
+  backLabel?: string
+  onBack?: () => void
 }
 
 export function UserDetailError({
   message,
   onRetry,
   className,
+  backLabel = 'Back to users',
+  onBack,
 }: UserDetailErrorProps) {
   const navigate = useNavigate()
 
   return (
-    <Card bordered={false} className={className}>
+    <StateCard className={className}>
       <Result
         status="error"
         title="Failed to load user"
         subTitle={message ?? 'Something went wrong. Please try again.'}
         extra={
           <Space wrap>
-            <Button icon={<ReloadOutlined />} type="primary" onClick={onRetry}>
+            <Button type="primary" icon={<ReloadOutlined />} onClick={onRetry}>
               Retry
             </Button>
-            <Button onClick={() => navigate(ROUTES.users)}>Back to users</Button>
+            <Button
+              onClick={onBack ?? (() => navigate(ROUTES.users))}
+            >
+              {backLabel}
+            </Button>
           </Space>
         }
+        className="users-feature-state"
       />
-    </Card>
+    </StateCard>
   )
 }
 
 interface UserDetailEmptyProps {
   className?: string
+  title?: string
+  description?: string
+  backLabel?: string
+  onBack?: () => void
 }
 
-export function UserDetailEmpty({ className }: UserDetailEmptyProps) {
+export function UserDetailEmpty({
+  className,
+  title = 'User not found',
+  description = 'The user you are looking for does not exist or may have been removed.',
+  backLabel = 'Back to users',
+  onBack,
+}: UserDetailEmptyProps) {
   const navigate = useNavigate()
 
   return (
-    <Card bordered={false} className={className}>
-      <Empty description="User not found" className="user-detail__state">
+    <StateCard className={className}>
+      <Empty
+        className="users-feature-state"
+        description={
+          <Space direction="vertical" size={4}>
+            <Text strong>{title}</Text>
+            <Text type="secondary">{description}</Text>
+          </Space>
+        }
+      >
         <Button
           type="primary"
           icon={<ArrowLeftOutlined />}
-          onClick={() => navigate(ROUTES.users)}
+          onClick={onBack ?? (() => navigate(ROUTES.users))}
         >
-          Back to users
+          {backLabel}
         </Button>
       </Empty>
-    </Card>
+    </StateCard>
+  )
+}
+
+interface UserEditSavingAlertProps {
+  visible: boolean
+}
+
+export function UserEditSavingAlert({ visible }: UserEditSavingAlertProps) {
+  if (!visible) {
+    return null
+  }
+
+  return (
+    <Alert
+      type="info"
+      showIcon
+      message="Saving changes..."
+      className="users-feature-state__saving-alert"
+    />
   )
 }

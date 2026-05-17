@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants/routes'
 import type { UpdateUserPayload, User } from '../types/user'
 import { useUpdateUserMutation } from '../hooks/useUpdateUserMutation'
+import { UserEditSavingAlert } from './UserDetailStates'
 
 export interface UserEditFormValues {
   firstName: string
@@ -105,7 +106,10 @@ export function UserEditForm({ user, userId }: UserEditFormProps) {
       onFinish={handleFinish}
       className="user-edit__form"
       requiredMark="optional"
+      disabled={isPending}
     >
+      <UserEditSavingAlert visible={isPending} />
+
       <div className="user-edit__section">
         <h3 className="user-edit__section-title">Personal information</h3>
         <Row gutter={[24, 0]}>

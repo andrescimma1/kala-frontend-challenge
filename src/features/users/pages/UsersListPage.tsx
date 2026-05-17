@@ -3,6 +3,11 @@ import { useUsersQuery } from '../hooks/useUsersQuery'
 import { UsersListHeader } from '../components/UsersListHeader'
 import { UsersSearchInput } from '../components/UsersSearchInput'
 import { UsersTable } from '../components/UsersTable'
+import {
+  UsersListEmpty,
+  UsersListError,
+  UsersListLoading,
+} from '../components/UserDetailStates'
 import { setCurrentPage } from '../store/usersUiSlice'
 import {
   selectCurrentPage,
@@ -28,24 +33,46 @@ export function UsersListPage() {
 
   const users = data?.users ?? []
   const total = data?.total ?? 0
+  const isInitialLoading = isLoading && data === undefined
+  const isEmpty = !isInitialLoading && !isError && users.length === 0
+
+  const renderTableSection = () => {
+    if (isInitialLoading) {
+      return <UsersListLoading />
+    }
+
+    if (isError) {
+      return (
+        <UsersListError
+          message={error?.message}
+          onRetry={() => void refetch()}
+        />
+      )
+    }
+
+    if (isEmpty) {
+      return <UsersListEmpty searchTerm={searchTerm} />
+    }
+
+    return (
+      <UsersTable
+        users={users}
+        total={total}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        skip={skip}
+        isLoading={isFetching}
+        onPageChange={(page) => dispatch(setCurrentPage(page))}
+      />
+    )
+  }
 
   return (
     <Card bordered={false} className="users-list page-shell">
       <Space direction="vertical" size={24} className="users-list__content">
-        <UsersListHeader total={total} />
+        <UsersListHeader total={isInitialLoading ? 0 : total} />
         <UsersSearchInput />
-        <UsersTable
-          users={users}
-          total={total}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          skip={skip}
-          isLoading={isLoading || isFetching}
-          isError={isError}
-          errorMessage={error?.message}
-          onPageChange={(page) => dispatch(setCurrentPage(page))}
-          onRetry={() => void refetch()}
-        />
+        {renderTableSection()}
       </Space>
     </Card>
   )

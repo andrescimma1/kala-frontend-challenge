@@ -64,6 +64,12 @@
     margin-top: 8px;
     margin-bottom: 0;
   }
+
+  &__form.ant-form-disabled {
+    .user-edit__section {
+      opacity: 0.92;
+    }
+  }
 }
 
 @media (max-width: 768px) {

@@ -6,11 +6,12 @@ import { UserEditForm } from '../components/UserEditForm'
 import {
   UserDetailEmpty,
   UserDetailError,
-  UserDetailLoading,
+  UserEditLoading,
 } from '../components/UserDetailStates'
 import { useUserQuery } from '../hooks/useUserQuery'
 import { parseUserId } from '../utils/parseUserId'
 import '../styles/user-edit.scss'
+import '../styles/users-list.scss'
 
 const { Title, Text } = Typography
 const pageClassName = 'user-edit page-shell'
@@ -24,11 +25,18 @@ export function UserEditPage() {
     useUserQuery(id)
 
   if (userId === null) {
-    return <UserDetailEmpty className={pageClassName} />
+    return (
+      <UserDetailEmpty
+        className={pageClassName}
+        title="Invalid user"
+        description="The user ID in the URL is not valid."
+        backLabel="Back to users"
+      />
+    )
   }
 
   if (isLoading) {
-    return <UserDetailLoading className={pageClassName} />
+    return <UserEditLoading className={pageClassName} />
   }
 
   if (isError) {
@@ -42,11 +50,16 @@ export function UserEditPage() {
   }
 
   if (isFetched && !user) {
-    return <UserDetailEmpty className={pageClassName} />
+    return (
+      <UserDetailEmpty
+        className={pageClassName}
+        backLabel="Back to users"
+      />
+    )
   }
 
   if (!user) {
-    return <UserDetailLoading className={pageClassName} />
+    return <UserEditLoading className={pageClassName} />
   }
 
   return (

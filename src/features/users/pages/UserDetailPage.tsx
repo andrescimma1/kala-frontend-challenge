@@ -10,6 +10,7 @@ import {
 import { useUserQuery } from '../hooks/useUserQuery'
 import { parseUserId } from '../utils/parseUserId'
 import '../styles/user-detail.scss'
+import '../styles/users-list.scss'
 
 const pageClassName = 'user-detail page-shell'
 
@@ -21,7 +22,13 @@ export function UserDetailPage() {
     useUserQuery(id)
 
   if (userId === null) {
-    return <UserDetailEmpty className={pageClassName} />
+    return (
+      <UserDetailEmpty
+        className={pageClassName}
+        title="Invalid user"
+        description="The user ID in the URL is not valid."
+      />
+    )
   }
 
   if (isLoading) {

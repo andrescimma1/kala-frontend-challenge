@@ -7,7 +7,7 @@ import {
   UsersListEmpty,
   UsersListError,
   UsersListLoading,
-} from '../components/UserDetailStates'
+} from '../components/UserPageStates'
 import { setCurrentPage } from '../store/usersUiSlice'
 import {
   selectCurrentPage,
@@ -15,6 +15,7 @@ import {
   selectSearchTerm,
 } from '../store/usersUiSelectors'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import '../styles/user-states.scss'
 import '../styles/users-list.scss'
 
 export function UsersListPage() {

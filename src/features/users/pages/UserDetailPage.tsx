@@ -6,11 +6,12 @@ import {
   UserDetailEmpty,
   UserDetailError,
   UserDetailLoading,
-} from '../components/UserDetailStates'
+} from '../components/UserPageStates'
 import { useUserQuery } from '../hooks/useUserQuery'
 import { parseUserId } from '../utils/parseUserId'
+import { resolveUserPageView } from '../utils/resolveUserPageView'
 import '../styles/user-detail.scss'
-import '../styles/users-list.scss'
+import '../styles/user-states.scss'
 
 const pageClassName = 'user-detail page-shell'
 
@@ -21,7 +22,15 @@ export function UserDetailPage() {
   const { data: user, isLoading, isError, error, refetch, isFetched } =
     useUserQuery(id)
 
-  if (userId === null) {
+  const pageView = resolveUserPageView({
+    userId,
+    isLoading,
+    isError,
+    isFetched,
+    hasUser: Boolean(user),
+  })
+
+  if (pageView === 'invalid-id') {
     return (
       <UserDetailEmpty
         className={pageClassName}
@@ -31,11 +40,11 @@ export function UserDetailPage() {
     )
   }
 
-  if (isLoading) {
+  if (pageView === 'loading') {
     return <UserDetailLoading className={pageClassName} />
   }
 
-  if (isError) {
+  if (pageView === 'error') {
     return (
       <UserDetailError
         className={pageClassName}
@@ -45,7 +54,7 @@ export function UserDetailPage() {
     )
   }
 
-  if (isFetched && !user) {
+  if (pageView === 'not-found') {
     return <UserDetailEmpty className={pageClassName} />
   }
 

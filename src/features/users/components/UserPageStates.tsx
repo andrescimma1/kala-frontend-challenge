@@ -27,8 +27,6 @@ function StateCard({ className, children }: StateCardProps) {
   )
 }
 
-// —— Users list ——
-
 export function UsersListLoading({ className }: { className?: string }) {
   return (
     <div className={`users-feature-state users-feature-state--list-loading ${className ?? ''}`}>
@@ -95,8 +93,6 @@ export function UsersListEmpty({ searchTerm, className }: UsersListEmptyProps) {
     </div>
   )
 }
-
-// —— User detail / edit ——
 
 export function UserDetailLoading({ className }: { className?: string }) {
   return (

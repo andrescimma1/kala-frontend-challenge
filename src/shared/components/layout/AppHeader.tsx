@@ -14,9 +14,9 @@ import {
   Typography,
 } from 'antd'
 import type { MenuProps } from 'antd'
-import { useMemo, type ReactNode } from 'react'
+import { useMemo } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import { ROUTES } from '@/shared/constants/routes'
+import { getUsersBreadcrumbDefs } from '@/shared/navigation/usersBreadcrumbs'
 
 const { Header } = Layout
 const { Text } = Typography
@@ -38,33 +38,12 @@ export function AppHeader({ showMenuButton, onMenuOpen }: AppHeaderProps) {
   const { id } = useParams<{ id: string }>()
 
   const breadcrumbItems = useMemo(() => {
-    const items: { title: ReactNode }[] = [
-      {
-        title: <Link to={ROUTES.users}>Dashboard</Link>,
-      },
-    ]
-
-    if (location.pathname === ROUTES.users) {
-      items.push({ title: 'Users' })
-      return items
-    }
-
-    if (location.pathname.startsWith('/users/')) {
-      items.push({
-        title: <Link to={ROUTES.users}>Users</Link>,
-      })
-
-      if (location.pathname.endsWith('/edit') && id) {
-        items.push({
-          title: <Link to={ROUTES.userDetail(id)}>User #{id}</Link>,
-        })
-        items.push({ title: 'Edit' })
-      } else if (id) {
-        items.push({ title: `User #${id}` })
+    return getUsersBreadcrumbDefs(location.pathname, id).map((item) => {
+      if (item.type === 'link') {
+        return { title: <Link to={item.to}>{item.label}</Link> }
       }
-    }
-
-    return items
+      return { title: item.label }
+    })
   }, [id, location.pathname])
 
   return (

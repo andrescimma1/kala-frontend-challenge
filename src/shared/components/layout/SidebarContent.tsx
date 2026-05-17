@@ -1,14 +1,11 @@
 import {
-  BankOutlined,
   CloseOutlined,
   DashboardOutlined,
   LogoutOutlined,
-  SettingOutlined,
   TeamOutlined,
 } from '@ant-design/icons'
 import { Avatar, Button, Menu, Typography } from 'antd'
 import type { MenuProps } from 'antd'
-import { useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants/routes'
 
@@ -16,27 +13,9 @@ const { Text } = Typography
 
 const menuItems: MenuProps['items'] = [
   {
-    key: 'dashboard',
-    icon: <DashboardOutlined />,
-    label: 'Dashboard',
-    disabled: true,
-  },
-  {
     key: 'users',
     icon: <TeamOutlined />,
     label: 'Users',
-  },
-  {
-    key: 'organizations',
-    icon: <BankOutlined />,
-    label: 'Organizations',
-    disabled: true,
-  },
-  {
-    key: 'settings',
-    icon: <SettingOutlined />,
-    label: 'Settings',
-    disabled: true,
   },
 ]
 
@@ -56,12 +35,7 @@ export function SidebarContent({
   const navigate = useNavigate()
   const location = useLocation()
 
-  const selectedKey = useMemo(() => {
-    if (location.pathname.startsWith(ROUTES.users)) {
-      return 'users'
-    }
-    return 'dashboard'
-  }, [location.pathname])
+  const selectedKey = location.pathname.startsWith(ROUTES.users) ? 'users' : ''
 
   const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
     if (key === 'users') {
@@ -91,7 +65,7 @@ export function SidebarContent({
       <Menu
         theme="dark"
         mode="inline"
-        selectedKeys={[selectedKey]}
+        selectedKeys={selectedKey ? [selectedKey] : []}
         items={menuItems}
         onClick={handleMenuClick}
         className="app-sider__menu"

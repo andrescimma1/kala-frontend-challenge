@@ -18,10 +18,6 @@ export function UsersSearchInput() {
     }
   }, [debouncedInput, dispatch, searchTerm])
 
-  useEffect(() => {
-    setInputValue(searchTerm)
-  }, [searchTerm])
-
   return (
     <Input
       allowClear

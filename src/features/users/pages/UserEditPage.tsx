@@ -7,11 +7,12 @@ import {
   UserDetailEmpty,
   UserDetailError,
   UserEditLoading,
-} from '../components/UserDetailStates'
+} from '../components/UserPageStates'
 import { useUserQuery } from '../hooks/useUserQuery'
 import { parseUserId } from '../utils/parseUserId'
+import { resolveUserPageView } from '../utils/resolveUserPageView'
 import '../styles/user-edit.scss'
-import '../styles/users-list.scss'
+import '../styles/user-states.scss'
 
 const { Title, Text } = Typography
 const pageClassName = 'user-edit page-shell'
@@ -24,7 +25,15 @@ export function UserEditPage() {
   const { data: user, isLoading, isError, error, refetch, isFetched } =
     useUserQuery(id)
 
-  if (userId === null) {
+  const pageView = resolveUserPageView({
+    userId,
+    isLoading,
+    isError,
+    isFetched,
+    hasUser: Boolean(user),
+  })
+
+  if (pageView === 'invalid-id') {
     return (
       <UserDetailEmpty
         className={pageClassName}
@@ -35,11 +44,11 @@ export function UserEditPage() {
     )
   }
 
-  if (isLoading) {
+  if (pageView === 'loading') {
     return <UserEditLoading className={pageClassName} />
   }
 
-  if (isError) {
+  if (pageView === 'error') {
     return (
       <UserDetailError
         className={pageClassName}
@@ -49,7 +58,7 @@ export function UserEditPage() {
     )
   }
 
-  if (isFetched && !user) {
+  if (pageView === 'not-found') {
     return (
       <UserDetailEmpty
         className={pageClassName}
@@ -58,7 +67,7 @@ export function UserEditPage() {
     )
   }
 
-  if (!user) {
+  if (!user || userId === null) {
     return <UserEditLoading className={pageClassName} />
   }
 

@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants/routes'
 import type { UpdateUserPayload, User } from '../types/user'
 import { useUpdateUserMutation } from '../hooks/useUpdateUserMutation'
-import { UserEditSavingAlert } from './UserDetailStates'
+import { UserEditSavingAlert } from './UserPageStates'
 
 export interface UserEditFormValues {
   firstName: string

@@ -3,14 +3,14 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 export const DEFAULT_PAGE_SIZE = 5
 
 export interface UsersUiState {
-  search: string
-  page: number
+  searchTerm: string
+  currentPage: number
   pageSize: number
 }
 
 const initialState: UsersUiState = {
-  search: '',
-  page: 1,
+  searchTerm: '',
+  currentPage: 1,
   pageSize: DEFAULT_PAGE_SIZE,
 }
 
@@ -18,24 +18,28 @@ const usersUiSlice = createSlice({
   name: 'usersUi',
   initialState,
   reducers: {
-    setSearch(state, action: PayloadAction<string>) {
-      state.search = action.payload
-      state.page = 1
+    setSearchTerm(state, action: PayloadAction<string>) {
+      state.searchTerm = action.payload
+      state.currentPage = 1
     },
-    setPage(state, action: PayloadAction<number>) {
-      state.page = action.payload
+    setCurrentPage(state, action: PayloadAction<number>) {
+      state.currentPage = action.payload
     },
     setPageSize(state, action: PayloadAction<number>) {
       state.pageSize = action.payload
-      state.page = 1
+      state.currentPage = 1
     },
-    resetUsersUi() {
-      return initialState
+    resetPagination(state) {
+      state.currentPage = 1
     },
   },
 })
 
-export const { setSearch, setPage, setPageSize, resetUsersUi } =
-  usersUiSlice.actions
+export const {
+  setSearchTerm,
+  setCurrentPage,
+  setPageSize,
+  resetPagination,
+} = usersUiSlice.actions
 
 export default usersUiSlice.reducer

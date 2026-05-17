@@ -1,3 +1,8 @@
+export interface AddressCoordinates {
+  lat: number
+  lng: number
+}
+
 export interface UserAddress {
   address: string
   city: string
@@ -5,6 +10,20 @@ export interface UserAddress {
   stateCode: string
   postalCode: string
   country: string
+  coordinates?: AddressCoordinates
+}
+
+export interface UserBank {
+  cardExpire: string
+  cardNumber: string
+  cardType: string
+  currency: string
+  iban: string
+}
+
+export interface UserHair {
+  color: string
+  type: string
 }
 
 export interface UserCompany {
@@ -28,6 +47,17 @@ export interface User {
   image: string
   company: UserCompany
   role: string
+  address?: UserAddress
+  bank?: UserBank
+  university?: string
+  bloodGroup?: string
+  height?: number
+  weight?: number
+  eyeColor?: string
+  hair?: UserHair
+  ein?: string
+  ssn?: string
+  userAgent?: string
 }
 
 export type UpdateUserPayload = Partial<

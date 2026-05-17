@@ -1,15 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { usersApi } from '../api/usersApi'
 import { usersQueryKeys } from '../api/queryKeys'
-
-function parseUserId(id: number | string | undefined): number | null {
-  if (id === undefined || id === '') {
-    return null
-  }
-
-  const numericId = typeof id === 'number' ? id : Number(id)
-  return Number.isFinite(numericId) && numericId > 0 ? numericId : null
-}
+import { parseUserId } from '../utils/parseUserId'
 
 export function useUserQuery(id: number | string | undefined) {
   const userId = parseUserId(id)

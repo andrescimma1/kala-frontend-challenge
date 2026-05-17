@@ -3,4 +3,10 @@ export type {
   UsersResponse,
   UsersSearchParams,
 } from './api'
-export type { UpdateUserPayload, User, UserCompany } from './user'
+export type {
+  UpdateUserPayload,
+  User,
+  UserAddress,
+  UserBank,
+  UserCompany,
+} from './user'

@@ -1,0 +1,24 @@
+@use 'variables';
+@use 'layout';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  background: variables.$content-bg;
+  color: rgba(0, 0, 0, 0.88);
+  -webkit-font-smoothing: antialiased;
+}

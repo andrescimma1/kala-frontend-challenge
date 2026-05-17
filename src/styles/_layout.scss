@@ -1,0 +1,187 @@
+@use 'variables' as *;
+
+.app-layout {
+  min-height: 100vh;
+
+  &__main {
+    min-height: 100vh;
+    background: $content-bg;
+  }
+
+  &__content {
+    margin: 24px;
+    padding: 0;
+    min-height: calc(100vh - $header-height - 48px);
+  }
+}
+
+.app-sider {
+  display: flex;
+  flex-direction: column;
+
+  .ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 64px;
+    padding: 0 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: $primary;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__menu {
+    flex: 1;
+    border-inline-end: none !important;
+    padding: 12px 8px;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: auto;
+  }
+
+  &__profile {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+  }
+
+  &__name {
+    color: #fff !important;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  &__role {
+    color: rgba(255, 255, 255, 0.55) !important;
+    font-size: 12px;
+  }
+
+  &__avatar {
+    background: $primary;
+    flex-shrink: 0;
+  }
+
+  &__logout {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: $header-height;
+  padding: 0 24px;
+  background: #fff;
+  border-bottom: 1px solid $border-subtle;
+  line-height: $header-height;
+
+  &__breadcrumb {
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+  }
+
+  &__profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  &__avatar {
+    background: $primary;
+  }
+
+  &__name {
+    font-weight: 500;
+  }
+
+  &__chevron {
+    font-size: 10px;
+    color: $text-muted;
+  }
+}
+
+.page-shell {
+  background: #fff;
+  border-radius: $card-radius;
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+
+  &__header {
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    margin: 0 !important;
+  }
+
+  &__subtitle {
+    margin: 4px 0 0 !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .app-layout__content {
+    margin: 16px;
+  }
+
+  .app-header {
+    padding: 0 16px;
+
+    &__name {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .page-shell {
+    padding: 16px;
+  }
+}

@@ -1,3 +1,6 @@
-export { useUsers, type UseUsersParams } from './useUsers'
-export { useUser } from './useUser'
-export { useUpdateUser, type UpdateUserVariables } from './useUpdateUser'
+export { useUsersQuery, type UseUsersQueryParams } from './useUsersQuery'
+export { useUserQuery } from './useUserQuery'
+export {
+  useUpdateUserMutation,
+  type UpdateUserMutationVariables,
+} from './useUpdateUserMutation'

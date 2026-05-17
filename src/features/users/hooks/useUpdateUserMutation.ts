@@ -3,21 +3,22 @@ import { usersApi } from '../api/usersApi'
 import { usersQueryKeys } from '../api/queryKeys'
 import type { UpdateUserPayload, User } from '../types/user'
 
-export interface UpdateUserVariables {
+export interface UpdateUserMutationVariables {
   id: number
   payload: UpdateUserPayload
 }
 
-export function useUpdateUser() {
+export function useUpdateUserMutation() {
   const queryClient = useQueryClient()
 
-  return useMutation<User, Error, UpdateUserVariables>({
+  return useMutation<User, Error, UpdateUserMutationVariables>({
     mutationFn: ({ id, payload }) => usersApi.updateUser(id, payload),
-    onSuccess: (user, { id }) => {
-      queryClient.setQueryData(usersQueryKeys.detail(id), user)
-      void queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
+    onSuccess: (_user, { id }) => {
       void queryClient.invalidateQueries({
-        queryKey: usersQueryKeys.searches(),
+        queryKey: usersQueryKeys.detail(id),
+      })
+      void queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.lists(),
       })
     },
   })

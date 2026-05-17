@@ -1,0 +1,150 @@
+@use '../../../styles/variables' as *;
+
+.users-list {
+  &__content {
+    width: 100%;
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    margin: 0 !important;
+  }
+
+  &__subtitle {
+    margin: 4px 0 0 !important;
+  }
+
+  &__total-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #e6f4ff;
+    color: $primary;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &__search {
+    width: 100%;
+  }
+
+  &__search-icon {
+    color: rgba(0, 0, 0, 0.45);
+  }
+}
+
+.users-table {
+  &__table {
+    .ant-table-thead > tr > th {
+      background: #fafafa;
+      color: rgba(0, 0, 0, 0.45);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid $border-subtle;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    .ant-table-tbody > tr > td {
+      padding-top: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid $border-subtle;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background: #fafcff;
+    }
+  }
+
+  &__index {
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__name-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__name-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__full-name {
+    line-height: 1.3;
+  }
+
+  &__username {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  &__avatar {
+    flex-shrink: 0;
+    font-weight: 600;
+  }
+
+  &__actions {
+    white-space: nowrap;
+  }
+
+  &__action-btn {
+    padding-inline: 4px;
+    font-weight: 500;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  &__range {
+    color: $text-muted;
+    font-size: 14px;
+  }
+
+  &__pagination {
+    margin-left: auto;
+  }
+
+  &__error,
+  &__empty {
+    padding: 32px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .users-list__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .users-table__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .users-table__pagination {
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+  }
+}

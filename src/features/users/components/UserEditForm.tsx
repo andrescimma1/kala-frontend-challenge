@@ -9,8 +9,8 @@ import {
   Select,
   Space,
 } from 'antd'
-import type { FormProps } from 'antd'
-import { useEffect } from 'react'
+import type { FormProps, Rule } from 'antd/es/form'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants/routes'
 import type { UpdateUserPayload, User } from '../types/user'
@@ -56,6 +56,16 @@ function mapValuesToPayload(
   }
 }
 
+function createNameRules(label: 'First name' | 'Last name'): Rule[] {
+  return [
+    { required: true, message: `${label} is required` },
+    {
+      pattern: /^[^\d]*$/,
+      message: 'Name cannot contain numbers',
+    },
+  ]
+}
+
 function getInitialValues(user: User): UserEditFormValues {
   return {
     firstName: user.firstName,
@@ -73,12 +83,21 @@ function getInitialValues(user: User): UserEditFormValues {
 
 export function UserEditForm({ user, userId }: UserEditFormProps) {
   const [form] = Form.useForm<UserEditFormValues>()
+  const [isFormValid, setIsFormValid] = useState(false)
+  const formValues = Form.useWatch([], form)
   const navigate = useNavigate()
   const { mutate, isPending } = useUpdateUserMutation()
 
   useEffect(() => {
     form.setFieldsValue(getInitialValues(user))
   }, [form, user])
+
+  useEffect(() => {
+    form
+      .validateFields({ validateOnly: true })
+      .then(() => setIsFormValid(true))
+      .catch(() => setIsFormValid(false))
+  }, [form, formValues])
 
   const handleFinish: FormProps<UserEditFormValues>['onFinish'] = (values) => {
     mutate(
@@ -117,7 +136,7 @@ export function UserEditForm({ user, userId }: UserEditFormProps) {
             <Form.Item
               name="firstName"
               label="First name"
-              rules={[{ required: true, message: 'First name is required' }]}
+              rules={createNameRules('First name')}
             >
               <Input placeholder="First name" />
             </Form.Item>
@@ -126,7 +145,7 @@ export function UserEditForm({ user, userId }: UserEditFormProps) {
             <Form.Item
               name="lastName"
               label="Last name"
-              rules={[{ required: true, message: 'Last name is required' }]}
+              rules={createNameRules('Last name')}
             >
               <Input placeholder="Last name" />
             </Form.Item>
@@ -224,7 +243,12 @@ export function UserEditForm({ user, userId }: UserEditFormProps) {
 
       <Form.Item className="user-edit__actions">
         <Space wrap>
-          <Button type="primary" htmlType="submit" loading={isPending}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={isPending}
+            disabled={!isFormValid || isPending}
+          >
             Save changes
           </Button>
           <Button onClick={handleCancel} disabled={isPending}>

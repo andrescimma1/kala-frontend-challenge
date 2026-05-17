@@ -1,5 +1,7 @@
 import { Pagination, Table } from 'antd'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/shared/constants/routes'
 import type { User } from '../types/user'
 import { formatShowingRange } from '../utils/userDisplay'
 import { createUsersTableColumns } from './usersTableColumns'
@@ -23,9 +25,21 @@ export function UsersTable({
   isLoading = false,
   onPageChange,
 }: UsersTableProps) {
+  const navigate = useNavigate()
+
   const columns = useMemo(
     () => createUsersTableColumns(skip),
     [skip],
+  )
+
+  const navigateToUser = useCallback(
+    (user: User) => {
+      if (isLoading) {
+        return
+      }
+      navigate(ROUTES.userDetail(user.id))
+    },
+    [isLoading, navigate],
   )
 
   return (
@@ -38,6 +52,19 @@ export function UsersTable({
           loading={isLoading}
           pagination={false}
           className="users-table__table"
+          rowClassName={() => 'users-table__row'}
+          onRow={(user) => ({
+            onClick: () => navigateToUser(user),
+            onKeyDown: (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                navigateToUser(user)
+              }
+            },
+            tabIndex: 0,
+            role: 'button',
+            'aria-label': `View ${user.firstName} ${user.lastName}`,
+          })}
         />
       </div>
 

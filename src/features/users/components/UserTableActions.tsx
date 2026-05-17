@@ -10,13 +10,25 @@ interface UserTableActionsProps {
 export function UserTableActions({ userId }: UserTableActionsProps) {
   const navigate = useNavigate()
 
+  const stopRowActivation = (event: React.MouseEvent | React.KeyboardEvent) => {
+    event.stopPropagation()
+  }
+
   return (
-    <Space size={4} className="users-table__actions">
+    <Space
+      size={4}
+      className="users-table__actions"
+      onClick={stopRowActivation}
+      onKeyDown={stopRowActivation}
+    >
       <Button
         type="link"
         icon={<EyeOutlined />}
         className="users-table__action-btn"
-        onClick={() => navigate(ROUTES.userDetail(userId))}
+        onClick={(event) => {
+          stopRowActivation(event)
+          navigate(ROUTES.userDetail(userId))
+        }}
       >
         View
       </Button>
@@ -24,7 +36,10 @@ export function UserTableActions({ userId }: UserTableActionsProps) {
         type="link"
         icon={<EditOutlined />}
         className="users-table__action-btn"
-        onClick={() => navigate(ROUTES.userEdit(userId))}
+        onClick={(event) => {
+          stopRowActivation(event)
+          navigate(ROUTES.userEdit(userId))
+        }}
       >
         Edit
       </Button>

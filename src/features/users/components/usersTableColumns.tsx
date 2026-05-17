@@ -77,6 +77,10 @@ export function createUsersTableColumns(skip: number): TableColumnsType<User> {
       key: 'action',
       width: 160,
       render: (_, user) => <UserTableActions userId={user.id} />,
+      onCell: () => ({
+        onClick: (event) => event.stopPropagation(),
+        onKeyDown: (event) => event.stopPropagation(),
+      }),
     },
   ]
 }

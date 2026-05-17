@@ -55,42 +55,42 @@ export function UsersTable({
 
   return (
     <div className="users-table">
-      <Table<User>
-        rowKey="id"
-        columns={columns}
-        dataSource={users}
-        loading={isLoading}
-        pagination={false}
-        scroll={{ x: 960 }}
-        className="users-table__table"
-        locale={{
-          emptyText: (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={
-                isEmpty
-                  ? 'No users found'
-                  : 'No data'
-              }
-              className="users-table__empty"
-            />
-          ),
-        }}
-      />
+      <div className="users-table__scroll">
+        <Table<User>
+          rowKey="id"
+          columns={columns}
+          dataSource={users}
+          loading={isLoading}
+          pagination={false}
+          className="users-table__table"
+          locale={{
+            emptyText: (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={isEmpty ? 'No users found' : 'No data'}
+                className="users-table__empty"
+              />
+            ),
+          }}
+        />
+      </div>
 
       {!isEmpty && total > 0 && (
         <footer className="users-table__footer">
           <span className="users-table__range">
             {formatShowingRange(currentPage, pageSize, total)}
           </span>
-          <Pagination
-            current={currentPage}
-            pageSize={pageSize}
-            total={total}
-            onChange={onPageChange}
-            showSizeChanger={false}
-            className="users-table__pagination"
-          />
+          <div className="users-table__pagination-wrap">
+            <Pagination
+              current={currentPage}
+              pageSize={pageSize}
+              total={total}
+              onChange={onPageChange}
+              showSizeChanger={false}
+              responsive
+              className="users-table__pagination"
+            />
+          </div>
         </footer>
       )}
     </div>

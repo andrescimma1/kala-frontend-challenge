@@ -1,5 +1,18 @@
-import { BellOutlined, DownOutlined } from '@ant-design/icons'
-import { Avatar, Badge, Breadcrumb, Dropdown, Layout, Space, Typography } from 'antd'
+import {
+  BellOutlined,
+  DownOutlined,
+  MenuOutlined,
+} from '@ant-design/icons'
+import {
+  Avatar,
+  Badge,
+  Breadcrumb,
+  Button,
+  Dropdown,
+  Layout,
+  Space,
+  Typography,
+} from 'antd'
 import type { MenuProps } from 'antd'
 import { useMemo, type ReactNode } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
@@ -15,7 +28,12 @@ const profileMenuItems: MenuProps['items'] = [
   { key: 'logout', label: 'Log out', disabled: true },
 ]
 
-export function AppHeader() {
+interface AppHeaderProps {
+  showMenuButton?: boolean
+  onMenuOpen?: () => void
+}
+
+export function AppHeader({ showMenuButton, onMenuOpen }: AppHeaderProps) {
   const location = useLocation()
   const { id } = useParams<{ id: string }>()
 
@@ -51,7 +69,18 @@ export function AppHeader() {
 
   return (
     <Header className="app-header">
-      <Breadcrumb items={breadcrumbItems} className="app-header__breadcrumb" />
+      <div className="app-header__start">
+        {showMenuButton && (
+          <Button
+            type="text"
+            icon={<MenuOutlined />}
+            className="app-header__menu-btn"
+            onClick={onMenuOpen}
+            aria-label="Open menu"
+          />
+        )}
+        <Breadcrumb items={breadcrumbItems} className="app-header__breadcrumb" />
+      </div>
 
       <Space size="large" className="app-header__actions">
         <Badge dot>
@@ -60,7 +89,7 @@ export function AppHeader() {
 
         <Dropdown menu={{ items: profileMenuItems }} trigger={['click']}>
           <button type="button" className="app-header__profile">
-            <Avatar size={32} className="app-header__avatar">
+            <Avatar size={40} className="app-header__avatar">
               AK
             </Avatar>
             <Text className="app-header__name">Alex Kim</Text>

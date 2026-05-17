@@ -1,8 +1,23 @@
 @use '../../../styles/variables' as *;
 
+$users-table-min-width: 900px;
+
 .users-list {
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  &.page-shell {
+    padding: 0;
+  }
+
+  .ant-card-body {
+    padding: 24px;
+  }
+
   &__content {
     width: 100%;
+    max-width: 100%;
   }
 
   &__header {
@@ -35,6 +50,7 @@
 
   &__search {
     width: 100%;
+    max-width: 100%;
   }
 
   &__search-icon {
@@ -43,7 +59,50 @@
 }
 
 .users-table {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  &__scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+
+    .ant-table-wrapper {
+      overflow: visible;
+    }
+  }
+
   &__table {
+    min-width: $users-table-min-width;
+
+    .ant-table {
+      min-width: $users-table-min-width;
+    }
+
+    table {
+      min-width: $users-table-min-width;
+    }
+
+    .ant-table-container,
+    .ant-table-content,
+    .ant-table-body {
+      overflow-y: visible !important;
+      max-height: none !important;
+    }
+
+    .ant-table-body {
+      overflow-x: visible !important;
+    }
+
+    .ant-spin-nested-loading,
+    .ant-spin-container {
+      overflow: visible;
+    }
+
     .ant-table-thead > tr > th {
       background: #fafafa;
       color: rgba(0, 0, 0, 0.45);
@@ -51,6 +110,7 @@
       font-weight: 600;
       letter-spacing: 0.04em;
       border-bottom: 1px solid $border-subtle;
+      white-space: nowrap;
 
       &::before {
         display: none;
@@ -58,8 +118,8 @@
     }
 
     .ant-table-tbody > tr > td {
-      padding-top: 14px;
-      padding-bottom: 14px;
+      padding-top: 16px;
+      padding-bottom: 16px;
       border-bottom: 1px solid $border-subtle;
     }
 
@@ -76,6 +136,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 200px;
   }
 
   &__name-meta {
@@ -114,15 +175,44 @@
     gap: 16px;
     margin-top: 20px;
     flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
   }
 
   &__range {
     color: $text-muted;
     font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  &__pagination-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin-left: auto;
   }
 
   &__pagination {
-    margin-left: auto;
+    flex-shrink: 0;
+    overflow: visible;
+
+    &.ant-pagination {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow: visible;
+      margin: 0;
+    }
+
+    .ant-pagination-item,
+    .ant-pagination-prev,
+    .ant-pagination-next,
+    .ant-pagination-jump-prev,
+    .ant-pagination-jump-next {
+      overflow: visible;
+    }
   }
 
   &__error,
@@ -131,20 +221,78 @@
   }
 }
 
+// Tablet: slightly tighter spacing
+@media (max-width: 992px) {
+  .users-list .ant-card-body {
+    padding: 20px;
+  }
+}
+
+// Mobile / small tablet
 @media (max-width: 768px) {
-  .users-list__header {
-    flex-direction: column;
-    align-items: stretch;
+  .users-list {
+    &.page-shell {
+      padding: 0;
+      border-radius: 10px;
+    }
+
+    .ant-card-body {
+      padding: 16px;
+    }
+
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__total-badge {
+      align-self: flex-start;
+    }
   }
 
-  .users-table__footer {
-    flex-direction: column;
-    align-items: stretch;
+  .users-table {
+    &__footer {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    &__range {
+      font-size: 13px;
+      text-align: center;
+    }
+
+    &__pagination-wrap {
+      margin-left: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    &__pagination {
+      .ant-pagination-item,
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        min-width: 30px;
+        height: 30px;
+        line-height: 28px;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .users-list .ant-card-body {
+    padding: 12px;
   }
 
-  .users-table__pagination {
-    margin-left: 0;
-    display: flex;
-    justify-content: center;
+  .users-table {
+    &__name-cell {
+      min-width: 180px;
+    }
+
+    &__action-btn {
+      padding-inline: 2px;
+      font-size: 13px;
+    }
   }
 }

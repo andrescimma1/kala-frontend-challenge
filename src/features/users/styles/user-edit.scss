@@ -1,0 +1,81 @@
+@use '../../../styles/variables' as *;
+
+.user-edit {
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  &.page-shell {
+    padding: 0;
+  }
+
+  .ant-card-body {
+    padding: 24px;
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__back {
+    align-self: flex-start;
+    padding-inline: 0;
+    color: $text-muted;
+    font-weight: 500;
+
+    &:hover {
+      color: $primary !important;
+    }
+  }
+
+  &__title {
+    margin: 0 !important;
+  }
+
+  &__form {
+    width: 100%;
+  }
+
+  &__form &__section {
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    background: #fafafa;
+    border-radius: 10px;
+  }
+
+  &__form &__section-title {
+    margin: 0 0 16px;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.88);
+  }
+
+  &__input-full {
+    width: 100%;
+  }
+
+  &__actions {
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-edit {
+    .ant-card-body {
+      padding: 16px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .user-edit .ant-card-body {
+    padding: 12px;
+  }
+}

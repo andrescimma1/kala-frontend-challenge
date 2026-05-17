@@ -9,6 +9,8 @@ export const usersQueryKeys = {
   lists: () => [...usersQueryKeys.all, 'list'] as const,
   list: (params: UsersListQueryKeyParams) =>
     [...usersQueryKeys.lists(), params] as const,
+  searchCatalog: (searchTerm: string) =>
+    [...usersQueryKeys.all, 'search-catalog', searchTerm] as const,
   details: () => [...usersQueryKeys.all, 'detail'] as const,
   detail: (id: number | string) =>
     [...usersQueryKeys.details(), id] as const,

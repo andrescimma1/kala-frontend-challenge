@@ -23,7 +23,7 @@ export function UsersSearchInput() {
       allowClear
       size="large"
       prefix={<SearchOutlined className="users-list__search-icon" />}
-      placeholder="Search by name, email or company..."
+      placeholder="Search by name, email, company, phone or age..."
       value={inputValue}
       onChange={(event) => setInputValue(event.target.value)}
       className="users-list__search"
